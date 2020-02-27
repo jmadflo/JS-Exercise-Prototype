@@ -39,9 +39,27 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name,
+  this.age = age,
+  this.stomach = [],
+  
+  this.toString
 }
+
+Person.prototype.eat = function(edible) {
+  if (this.stomach.length < 10){
+    this.stomach.push(edible);
+  }
+};
+
+Person.prototype.poop = function() {
+  this.stomach = [];
+};
+
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`;
+};
 
 /*
   TASK 2
@@ -57,8 +75,25 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.model = model,
+  this.milesPerGallon = milesPerGallon,
+  this.tank = 0;
+  this.odometer = 0;
+}
 
+Car.prototype.fill = function(gallons) {
+  this.tank += gallons;
+}
+
+Car.prototype.drive = function(distance) {
+  if (this.tank <= distance/this.milesPerGallon) {
+    this.odometer += this.tank * this.milesPerGallon;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+  this.odometer += distance;
+  this.tank -= distance/this.milesPerGallon;
 }
 
 /*
@@ -68,18 +103,26 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
-
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age, favoriteToy);
+  this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function (){
+  return `Playing with ${this.favoriteToy}`;
+};
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. When the function that 'this' resides in is in the global scope, the value of 'this' is the window.
+  2. When a function is called with the syntax "object.function" the object to the left of the dot is the value of 'this'.
+  3. In a constructor function 'this' is the instance of the object that is created with that constructor function.
+     Example: When creating a new object called Tyler with a constructor called Person, Tyler is the value of 'this'.
+  4. 'this' can be explicitly defined with the call, apply, and bind methods when we want to override the implied value of 'this'.
 */
 
 
